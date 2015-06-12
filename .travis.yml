@@ -6,7 +6,6 @@ perl:
     - "5.14"
 before_install:
     # install prereqs
-    - "cpanm Moose"
     - "cpanm Devel::Cover::Report::Coveralls"
 script:
     perl Makefile.PL && make test && cover -test -report coveralls
