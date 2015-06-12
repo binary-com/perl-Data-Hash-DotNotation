@@ -1,0 +1,9 @@
+v1.08 Mon Mar  2 03:38:04 UTC 2015
+    - Switch to YAML::CacheLoader for LoadFile
+
+v1.06 Mon Feb  9 13:53:25 UTC 2015
+    - fix for missing futures
+
+v1.05 Mon Feb  9 09:37:55 UTC 2015
+    - attribute market added to underlyings.yml
+
