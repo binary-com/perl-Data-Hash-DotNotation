@@ -5,10 +5,6 @@ use warnings;
 
 our $VERSION = '1.00';
 
-use Moose;
-use Carp;
-use Sys::Hostname qw(hostname);
-
 =head1 NAME
 
 Data::Hash::DotNotation - Convenient representation for nested Hash structures
@@ -31,23 +27,37 @@ Data::Hash::DotNotation - Convenient representation for nested Hash structures
         });
 
     print $dn->get('score.contact');
+    $dn->set('score.scrabble', 50);
+
+    # return the complete modified hashref
+    my $gamer_info = $dn->data;
 
 =cut
 
-has 'data' => (
-    is      => 'rw',
-    default => sub { {}; },
-);
+sub new {
+    my ($class, $args) = @_;
+    my $data = $args || {};
+
+    my $self->{data} = $data;
+    bless $self, $class;
+
+    return $self;
+}
+
+sub data {
+    my ($self) = @_;
+    return $self->{data};
+}
 
 sub get {
     my $self = shift;
-    my $name = shift or croak "No name given";
+    my $name = shift or die "No name given";
     return $self->_get($name);
 }
 
 sub set {
     my $self  = shift;
-    my $name  = shift or croak 'No name given';
+    my $name  = shift or die 'No name given';
     my $value = shift;
 
     $self->_set($name, $value);
@@ -126,16 +136,7 @@ sub _set {
     return $self->data;
 }
 
-no Moose;
-__PACKAGE__->meta->make_immutable;
-
-=head1 DEPENDENCIES
-
-=over 4
-
-=item L<Moose>
-
-=back
+1;
 
 =head1 SOURCE CODE
 
@@ -158,7 +159,7 @@ your bug as we make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Finance::Asset
+    perldoc Data::Hash::DotNotation
 
 You can also look for information at:
 
@@ -223,6 +224,4 @@ CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
-
-1;
 

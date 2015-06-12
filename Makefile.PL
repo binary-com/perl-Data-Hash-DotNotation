@@ -15,11 +15,9 @@ WriteMakefile(
         'ExtUtils::MakeMaker' => 0,
     },
     BUILD_REQUIRES => {
-        'Test::Most'        => 0,
         'Test::Exception'   => 0,
     },
     PREREQ_PM => {
-        'Moose'          => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Data-Hash-DotNotation-*' },
