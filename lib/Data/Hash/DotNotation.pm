@@ -1,7 +1,7 @@
 package Data::Hash::DotNotation;
 use strict; use warnings;
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 use Moose;
 use Carp;
@@ -12,7 +12,7 @@ Data::Hash::DotNotation - Convenient representation for nested Hash structures
 
 =head1 VERSION
 
-1.00
+1.01
 
 =head1 SYNOPSYS
 
