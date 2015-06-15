@@ -1,13 +1,10 @@
 package Data::Hash::DotNotation;
-use 5.010;
-use strict;
-use warnings;
+use strict; use warnings;
 
 our $VERSION = '1.00';
 
 use Moose;
 use Carp;
-use Sys::Hostname qw(hostname);
 
 =head1 NAME
 
@@ -158,7 +155,7 @@ your bug as we make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Finance::Asset
+    perldoc Data::Hash::DotNotation
 
 You can also look for information at:
 
