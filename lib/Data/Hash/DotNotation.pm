@@ -34,7 +34,14 @@ Data::Hash::DotNotation - Convenient representation for nested Hash structures
 has 'data' => (
     is      => 'rw',
     default => sub { {}; },
+    trigger => sub { shift->_populate_cache(@_) },
 );
+
+has '_cache' => (
+    is      => 'rw',
+    default => sub { {}; },
+);
+
 
 sub get {
     my $self = shift;
@@ -55,45 +62,36 @@ sub set {
 sub key_exists {
     my $self = shift;
     my $name = shift;
-    my $data = $self->data;
+    my $cache = $self->_cache;
+    return exists($cache->{$name}) // '';
+}
 
-    my @parts = split(/\./, $name);
-    my $node = pop @parts;
-    my $parent_node;
-
-    while ($data and (my $section = shift @parts)) {
-        if (ref $data->{$section} eq 'HASH') {
-            $data = $data->{$section};
-        } else {
-            return;
-        }
+sub _update_cache_recursive {
+    my ($key, $value, $prefix, $cache) = @_;
+    my $cache_key = $prefix? $prefix . '.' . $key : $key;
+    $cache->{$cache_key} = $value;
+    if (ref $value eq 'HASH') {
+      while ( my($k, $v) = each(%$value)) {
+          _update_cache_recursive($k, $v, $cache_key, $cache);
+      }
     }
+}
 
-    return exists $data->{$node};
+sub _populate_cache {
+    my ($self, $data) = @_;
+    my $cache = {};
+    while ( my($k, $v) = each(%$data )) {
+        _update_cache_recursive($k, $v, undef, $cache);
+    }
+    $self->_cache($cache);
 }
 
 sub _get {
     my $self = shift;
     my $name = shift;
-    my $data = $self->data;
+    my $cache = $self->_cache;
 
-    my @parts = split(/\./, $name);
-    my $node = pop @parts;
-    my $parent_node;
-
-    while ($data and (my $section = shift @parts)) {
-        if (ref $data->{$section} eq 'HASH') {
-            $data = $data->{$section};
-        } else {
-            return;
-        }
-    }
-
-    if ($data and exists $data->{$node}) {
-        return $data->{$node};
-    }
-
-    return;
+    return $cache->{$name};
 }
 
 sub _set {
@@ -104,23 +102,27 @@ sub _set {
     unless ($self->data) {
         $self->data({});
     }
+    my $cache = $self->_cache;
 
-    my @tarts = split(/\./, $name);
-    my $node = pop @tarts;
+    my @parts = split(/\./, $name);
+    my $node = $parts[0] ;
 
     my $current_location = $self->data;
-    foreach my $section (@tarts) {
+    for my $idx (1 .. @parts - 1) {
+        my $section = $parts[$idx];
         $current_location->{$section} //= {};
+        my $cache_key = join('.', @{parts}[0 .. $idx]);
+        $cache->{$cache_key} = $current_location->{$section};
         $current_location = $current_location->{$section};
     }
 
+    my $cache_key = join('.', @parts);
     if (defined($value)) {
-        $current_location->{$node} = $value;
+        $cache->{$cache_key} = $current_location->{$node} = $value;
     } else {
         delete $current_location->{$node};
+        delete $cache->{$cache_key};
     }
-
-    return $self->data;
 }
 
 no Moose;
