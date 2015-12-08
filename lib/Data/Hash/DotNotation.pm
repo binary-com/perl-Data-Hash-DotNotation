@@ -46,7 +46,8 @@ has '_cache' => (
 sub get {
     my $self = shift;
     my $name = shift or croak "No name given";
-    return $self->_get($name);
+
+    return $self->_cache->{$name};
 }
 
 sub set {
@@ -84,14 +85,6 @@ sub _populate_cache {
         _update_cache_recursive($k, $v, undef, $cache);
     }
     $self->_cache($cache);
-}
-
-sub _get {
-    my $self = shift;
-    my $name = shift;
-    my $cache = $self->_cache;
-
-    return $cache->{$name};
 }
 
 sub _set {
