@@ -13,8 +13,8 @@ before_install:
     - build-perl
     - perl -V
     # install prereqs
-    - "cpanm Moose"
-    - "cpanm Devel::Cover::Report::Coveralls"
+    - "cpanm -n Moose"
+    - "cpanm -n Devel::Cover::Report::Coveralls"
 script:
     perl Makefile.PL && make test && cover -test -report coveralls
 
