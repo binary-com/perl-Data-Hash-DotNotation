@@ -16,7 +16,8 @@ before_install:
     - perl -V
     # install prereqs
     - "cpanm -n Moose"
-    - "cpanm -n Devel::Cover::Report::Coveralls"
+    - "cpanm -n Test::Requires::Git"
+    - "cpanm -n Devel::Cover::Report::Codecov"
 script:
-    perl Makefile.PL && make test && cover -test -report coveralls
+    perl Makefile.PL && make test && cover -test -report codecov
 
