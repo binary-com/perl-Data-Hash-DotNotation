@@ -1,6 +1,7 @@
 
 ### Data::Hash::DotNotation
-[![Build Status](https://travis-ci.org/binary-com/perl-Data-Hash-DotNotation.svg?branch=master)](https://travis-ci.org/binary-com/perl-Data-Hash-DotNotation) [![Coverage Status](https://coveralls.io/repos/binary-com/perl-Data-Hash-DotNotation/badge.png?branch=master)](https://coveralls.io/r/binary-com/perl-Data-Hash-DotNotation?branch=master)
+[![Build Status](https://travis-ci.org/binary-com/perl-Data-Hash-DotNotation.svg?branch=master)](https://travis-ci.org/binary-com/perl-Data-Hash-DotNotation)
+[![codecov](https://codecov.io/gh/binary-com/perl-Data-Hash-DotNotation/branch/master/graph/badge.svg)](https://codecov.io/gh/binary-com/perl-Data-Hash-DotNotation)
 
 Convenient representation for nested Hash structures
 
