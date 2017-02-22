@@ -25,6 +25,8 @@ Data::Hash::DotNotation - Convenient representation for nested Hash structures
 
     print $dn->get('score.contact');
 
+=head1 METHODS
+
 =cut
 
 has 'data' => (
@@ -32,11 +34,19 @@ has 'data' => (
     default => sub { {}; },
 );
 
+=head2 get
+
+=cut
+
 sub get {
     my $self = shift;
     my $name = shift or croak "No name given";
     return $self->_get($name);
 }
+
+=head2 set
+
+=cut
 
 sub set {
     my $self  = shift;
@@ -48,6 +58,10 @@ sub set {
     return $value;
 }
 
+=head2 key_exists
+
+=cut
+
 sub key_exists {
     my $self = shift;
     my $name = shift;
@@ -55,7 +69,6 @@ sub key_exists {
 
     my @parts = split(/\./, $name);
     my $node = pop @parts;
-    my $parent_node;
 
     while ($data and (my $section = shift @parts)) {
         if (ref $data->{$section} eq 'HASH') {
@@ -75,7 +88,6 @@ sub _get {
 
     my @parts = split(/\./, $name);
     my $node = pop @parts;
-    my $parent_node;
 
     while ($data and (my $section = shift @parts)) {
         if (ref $data->{$section} eq 'HASH') {
